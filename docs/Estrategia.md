@@ -74,7 +74,7 @@ Peso C: PFS = Peso por faixa salarial
 ### Telas
 - Cadastro de Funcionários
     + CRUD de Funcionários
-- Configuração do Sistema
+- Configuração do Cálculo
     + Valor do total disponibilizado
     + Pesos?
 - Relatório de Distribuição
