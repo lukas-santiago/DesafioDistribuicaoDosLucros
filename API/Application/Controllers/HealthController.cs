@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace DesafioDistribuicaoDosLucros.API.Controllers;
 
 [ApiController]
-[Route("health")]
+[Route("api/[controller]")]
 public class HealthController : ControllerBase
 {
-    [HttpGet(Name = "/")]
+    [HttpGet]
     public IActionResult Get()
     {
         return Ok("O servidor está online");
