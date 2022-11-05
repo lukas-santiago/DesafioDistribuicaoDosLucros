@@ -23,24 +23,25 @@ public class FuncionarioController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        return Ok(_funcionarioService.Get(id));
+        return Ok(await _funcionarioService.Get(id));
     }
 
     [HttpPost("")]
     public async Task<IActionResult> Add([FromBody] Funcionario funcionario)
     {
-        return Ok(_funcionarioService.Add(funcionario));
+        return Ok(await _funcionarioService.Add(funcionario));
     }
 
     [HttpPut("")]
     public async Task<IActionResult> Edit([FromBody] Funcionario funcionario)
     {
-        return Ok(_funcionarioService.Edit(funcionario));
+        return Ok(await _funcionarioService.Edit(funcionario));
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        return Ok(_funcionarioService.Delete(id));
+        await _funcionarioService.Delete(id);
+        return Ok();
     }
 }
