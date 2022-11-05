@@ -10,8 +10,8 @@ namespace Application.Services.Interfaces
     {
         public Task<IEnumerable<T>> GetAll();
         public Task<T> Get(long id);
-        public Task<bool> Add(T value);
-        public Task<bool> Edit(T value);
-        public Task<bool> Delete(long id);
+        public Task<T> Add(T value);
+        public Task<T> Edit(T value);
+        public Task Delete(long id);
     }
 }
