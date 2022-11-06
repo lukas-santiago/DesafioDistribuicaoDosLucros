@@ -17,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
     builder.Services.AddScoped<IConfiguracaoCalculoService, ConfiguracaoCalculoService>();
+    builder.Services.AddScoped<IPesoService, PesoService>();
+    builder.Services.AddScoped<IRelatorioDistribuicaoService, RelatorioDistribuicaoService>();
 }
 
 var app = builder.Build();

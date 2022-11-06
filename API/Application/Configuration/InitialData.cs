@@ -23,6 +23,7 @@ public class InitialDataGenerator
             new ConfiguracaoCalculo
             {
                 ValorTotalDisponibilizado = 0,
+                SalarioMinimo = 1000,
                 UpdatedDate = DateTime.Now,
                 CreationDate = DateTime.Now,
                 Ativo = true
@@ -58,75 +59,111 @@ public class InitialDataGenerator
         context.Peso.AddRange(
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorAreaDeAtuacao,
+                TipoPeso = TipoPeso.PesoPorAreaDeAtuacao,
                 Valor = 1,
                 Nome = "Diretoria",
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorAreaDeAtuacao,
+                TipoPeso = TipoPeso.PesoPorAreaDeAtuacao,
                 Valor = 2,
                 Nome = "Contabilidade, Financeiro ou Tecnologia",
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorAreaDeAtuacao,
+                TipoPeso = TipoPeso.PesoPorAreaDeAtuacao,
                 Valor = 3,
                 Nome = "Serviços Gerais",
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorAreaDeAtuacao,
+                TipoPeso = TipoPeso.PesoPorAreaDeAtuacao,
                 Valor = 4,
                 Nome = "Relacionamento com o Cliente",
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorFaixaSalarial,
+                TipoPeso = TipoPeso.PesoPorFaixaSalarial,
                 Valor = 1,
                 Nome = "Acima de 8 salarios-minimos",
+                ValorMinimo = 8,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorFaixaSalarial,
+                TipoPeso = TipoPeso.PesoPorFaixaSalarial,
                 Valor = 2,
                 Nome = "Acima de 5 salarios-minimos e abaixo de 8 salarios-minimos",
+                ValorMinimo = 5,
+                ValorMaximo = 8,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorFaixaSalarial,
+                TipoPeso = TipoPeso.PesoPorFaixaSalarial,
                 Valor = 3,
                 Nome = "Acima de 3 salarios-minimos e abaixo de 5 salarios-minimos",
+                ValorMinimo = 3,
+                ValorMaximo = 5,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorFaixaSalarial,
+                TipoPeso = TipoPeso.PesoPorFaixaSalarial,
                 Valor = 5,
                 Nome = "Todos os estagiarios e funcionarios que ganham ate 3 salarios-minimos",
+                ValorMaximo = 3,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorTempoDeAdmissao,
+                TipoPeso = TipoPeso.PesoPorTempoDeAdmissao,
                 Valor = 1,
                 Nome = "Ate 1 ano de casa",
+                ValorMaximo = 1,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorTempoDeAdmissao,
+                TipoPeso = TipoPeso.PesoPorTempoDeAdmissao,
                 Valor = 2,
                 Nome = "Entre 1 e 3 anos de casa",
+                ValorMinimo = 1,
+                ValorMaximo = 3,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorTempoDeAdmissao,
+                TipoPeso = TipoPeso.PesoPorTempoDeAdmissao,
                 Valor = 3,
                 Nome = "Entre 3 e 8 anos de casa",
+                ValorMinimo = 3,
+                ValorMaximo = 8,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             },
             new Peso
             {
-                TipoPeso = Models.Enum.TipoPeso.PesoPorTempoDeAdmissao,
+                TipoPeso = TipoPeso.PesoPorTempoDeAdmissao,
                 Valor = 4,
                 Nome = "Mais de 8 anos de casa",
+                ValorMinimo = 8,
+                CreationDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
             }
         );
 

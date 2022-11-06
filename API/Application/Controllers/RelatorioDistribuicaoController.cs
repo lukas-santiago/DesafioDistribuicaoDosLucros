@@ -17,17 +17,22 @@ public class RelatorioDistribuicaoController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(_relatorioDistribuicaoService.GetAll());
+        return Ok(await _relatorioDistribuicaoService.GetAll());
     }
     [HttpGet("GetLast")]
     public async Task<IActionResult> GetLast()
     {
-        return Ok(_relatorioDistribuicaoService.GetLast());
+        return Ok(await _relatorioDistribuicaoService.GetLast());
+    }
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById([FromRoute] int id)
+    {
+        return Ok(await _relatorioDistribuicaoService.GetById(id));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit()
+    public async Task<IActionResult> Generate()
     {
-        return Ok(_relatorioDistribuicaoService.Calculate());
+        return Ok(await _relatorioDistribuicaoService.Generate());
     }
 }

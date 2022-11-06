@@ -16,7 +16,7 @@ public class ConfiguracaoCalculoService : IConfiguracaoCalculoService
     public async Task<IEnumerable<ConfiguracaoCalculo>> GetAll()
     {
         var entity = _connection.ConfiguracaoCalculo.OrderByDescending(f => f.CreationDate).ToList();
-        return entity;
+        return await Task.FromResult(entity);
     }
     public async Task<ConfiguracaoCalculo> Get()
     {
@@ -25,7 +25,7 @@ public class ConfiguracaoCalculoService : IConfiguracaoCalculoService
         if (entity == null)
             throw new NotFoundException();
 
-        return entity;
+        return await Task.FromResult(entity);
     }
     public async Task Edit(ConfiguracaoCalculo value)
     {
@@ -36,6 +36,9 @@ public class ConfiguracaoCalculoService : IConfiguracaoCalculoService
 
         if (oldEntity.ValorTotalDisponibilizado == value.ValorTotalDisponibilizado)
             throw new EqualException();
+        
+        if (value.ValorTotalDisponibilizado == 0)
+            throw new CannotBeZeroException();
 
         oldEntity.Ativo = false;
         _connection.ConfiguracaoCalculo.Update(oldEntity);

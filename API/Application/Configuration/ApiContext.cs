@@ -9,7 +9,7 @@ public class ApiContext : DbContext
     public DbSet<Funcionario> Funcionario { get; set; }
     public DbSet<ConfiguracaoCalculo> ConfiguracaoCalculo { get; set; }
     public DbSet<Peso> Peso { get; set; }
-    // public DbSet<RelatorioDistribuicao> RelatorioDistribuicao { get; set; }
+    public DbSet<RelatorioDistribuicao> RelatorioDistribuicao { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -17,6 +17,5 @@ public class ApiContext : DbContext
             .HasMany<Funcionario>(p => p.funcionarios)
             .WithOne()
             .IsRequired().HasForeignKey(f => f.AreaAtuacao);
-        // .HasForeignKey<long>(f => f.AreaAtuacaoId);
     }
 }

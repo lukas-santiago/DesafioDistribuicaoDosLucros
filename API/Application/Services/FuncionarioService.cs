@@ -16,7 +16,8 @@ public class FuncionarioService : IFuncionarioService
 
     public async Task<IEnumerable<Funcionario>> GetAll()
     {
-        return await _connection.Funcionario.ToListAsync();
+        List<Funcionario> result = _connection.Funcionario.Where(f => f.Ativo == true).ToList();
+        return await Task.FromResult(result);
     }
     public async Task<Funcionario> Get(long id)
     {
@@ -56,7 +57,7 @@ public class FuncionarioService : IFuncionarioService
 
         _connection.Funcionario.Update(entity);
         await _connection.SaveChangesAsync();
-        
+
         return entity;
     }
 
