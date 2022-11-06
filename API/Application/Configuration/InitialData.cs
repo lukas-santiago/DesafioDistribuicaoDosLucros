@@ -11,7 +11,25 @@ public class InitialDataGenerator
         // {
         SetUpPesos(context);
         SetUpFuncionarios(context);
+        SetUpConfiguracaoCalculo(context);
         // }
+    }
+
+    private void SetUpConfiguracaoCalculo(ApiContext context)
+    {
+        if (context.ConfiguracaoCalculo.Any()) return;
+
+        context.ConfiguracaoCalculo.AddRange(
+            new ConfiguracaoCalculo
+            {
+                ValorTotalDisponibilizado = 0,
+                UpdatedDate = DateTime.Now,
+                CreationDate = DateTime.Now,
+                Ativo = true
+            }
+        );
+
+        context.SaveChanges();
     }
 
     private void SetUpFuncionarios(ApiContext context)

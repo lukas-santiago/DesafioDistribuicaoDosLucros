@@ -14,15 +14,21 @@ public class ConfiguracaoCalculoController : ControllerBase
         _configuracaoCalculoService = configuracaoCalculoService;
     }
 
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _configuracaoCalculoService.GetAll());
+    }
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return Ok(_configuracaoCalculoService.Get());
+        return Ok(await _configuracaoCalculoService.Get());
     }
 
     [HttpPut]
     public async Task<IActionResult> Edit([FromBody] ConfiguracaoCalculo request)
     {
-        return Ok(_configuracaoCalculoService.Edit(request));
+        await _configuracaoCalculoService.Edit(request);
+        return Ok();
     }
 }

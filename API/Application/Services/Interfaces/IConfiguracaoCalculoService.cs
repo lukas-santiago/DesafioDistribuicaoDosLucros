@@ -4,6 +4,7 @@ namespace Application.Services.Interfaces;
 
 public interface IConfiguracaoCalculoService
 {
+    public Task<IEnumerable<ConfiguracaoCalculo>> GetAll();
     public Task<ConfiguracaoCalculo> Get();
-    public Task<bool> Edit(ConfiguracaoCalculo value);
+    public Task Edit(ConfiguracaoCalculo value);
 }

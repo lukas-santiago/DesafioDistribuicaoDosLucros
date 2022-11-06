@@ -1,3 +1,5 @@
+using System.Web;
+using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using Application.Errors;
@@ -30,13 +32,15 @@ internal class GlobalErrorHandlerMiddleware
         HttpStatusCode status = HttpStatusCode.InternalServerError;
         string errorMessage = exception.Message;
         string stackTrace = exception.StackTrace == null ? "" : exception.StackTrace.ToString();
+        string searchInGoogle = exception.StackTrace == null ? "" :
+            "https://www.google.com/search?q=" + HttpUtility.UrlEncode(errorMessage);
 
         if (exception is BaseException)
         {
             status = HttpStatusCode.BadRequest;
         }
 
-        var result = JsonSerializer.Serialize(new { status, errorMessage , stackTrace });
+        var result = JsonSerializer.Serialize(new { status, errorMessage, stackTrace, searchInGoogle });
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = 401;
         return context.Response.WriteAsync(result);

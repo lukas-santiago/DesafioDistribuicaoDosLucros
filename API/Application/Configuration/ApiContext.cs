@@ -7,7 +7,7 @@ public class ApiContext : DbContext
     public ApiContext(DbContextOptions<ApiContext> options) : base(options) { }
 
     public DbSet<Funcionario> Funcionario { get; set; }
-    // public DbSet<ConfiguracaoCalculo> ConfiguracaoCalculo { get; set; }
+    public DbSet<ConfiguracaoCalculo> ConfiguracaoCalculo { get; set; }
     public DbSet<Peso> Peso { get; set; }
     // public DbSet<RelatorioDistribuicao> RelatorioDistribuicao { get; set; }
 

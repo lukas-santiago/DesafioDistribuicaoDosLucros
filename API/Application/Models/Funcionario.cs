@@ -9,5 +9,4 @@ public class Funcionario : BaseModel
     public TipoCargo Cargo { get; set; }
     public double SalarioBruto { get; set; }
     public DateTime DataAdmissao { get; set; }
-    public bool Ativo { get; set; } = true;
 }
