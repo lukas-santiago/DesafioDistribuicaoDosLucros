@@ -16,7 +16,7 @@ public class PesoService : IPesoService
         _configuracaoCalculo = configuracaoCalculo;
         _connection = connection;
     }
-    public async Task<IEnumerable<Peso>> GetAll()
+    public async Task<ICollection<Peso>> GetAll()
     {
         return await Task.FromResult(_connection.Peso.Where(e => e.Ativo == true).ToList());
     }

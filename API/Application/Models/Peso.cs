@@ -10,6 +10,6 @@ namespace Application.Models
 
         public double ValorMaximo { get; set; } = 0;
         public double ValorMinimo { get; set; } = 0;
-        public ICollection<Funcionario> funcionarios { get; set; }
+        public ICollection<Funcionario> Funcionarios { get; set; }
     }
 }

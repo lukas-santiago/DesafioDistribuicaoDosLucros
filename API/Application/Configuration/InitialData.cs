@@ -22,7 +22,7 @@ public class InitialDataGenerator
         context.ConfiguracaoCalculo.AddRange(
             new ConfiguracaoCalculo
             {
-                ValorTotalDisponibilizado = 0,
+                ValorTotalDisponibilizado = 20000,
                 SalarioMinimo = 1000,
                 UpdatedDate = DateTime.Now,
                 CreationDate = DateTime.Now,
@@ -45,6 +45,15 @@ public class InitialDataGenerator
                 AreaAtuacao = context.Peso.Where(p => p.Valor == 2 && p.TipoPeso == TipoPeso.PesoPorAreaDeAtuacao).First().Id,
                 Cargo = TipoCargo.Funcionario,
                 SalarioBruto = 10000,
+                DataAdmissao = DateTime.Now.Subtract(new TimeSpan(2000, 0, 0, 0))
+            },
+            new Funcionario
+            {
+                Matricula = "MAT002",
+                Nome = "Nome 02",
+                AreaAtuacao = context.Peso.Where(p => p.Valor == 3 && p.TipoPeso == TipoPeso.PesoPorAreaDeAtuacao).First().Id,
+                Cargo = TipoCargo.Funcionario,
+                SalarioBruto = 6000,
                 DataAdmissao = DateTime.Now.Subtract(new TimeSpan(2000, 0, 0, 0))
             }
         );

@@ -30,6 +30,11 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
         if (result == null)
             throw new NotFoundException();
 
+        result.RelatorioDistribuicaoFuncionario = _connection.RelatorioDistribuicaoFuncionario
+            .Where(e => e.RelatorioDistribuicaoId == result.Id).ToList();
+        result.RelatorioDistribuicaoPeso = _connection.RelatorioDistribuicaoPeso
+            .Where(e => e.RelatorioDistribuicaoId == result.Id).ToList();
+
         return await Task.FromResult<RelatorioDistribuicao>(result);
     }
     public async Task<IEnumerable<RelatorioDistribuicao>> GetAll()
@@ -54,17 +59,19 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
     public async Task<RelatorioDistribuicao> Generate()
     {
         var configuracaoCalculo = await _configuracaoCalculo.Get();
+        var pesos = await _peso.GetAll();
 
         var entity = new RelatorioDistribuicao()
         {
-            Pesos = await _peso.GetAll(),
+            RelatorioDistribuicaoPeso = pesos.Select(peso => new RelatorioDistribuicaoPeso(peso)).ToList(),
             TotalDisponibilizado = configuracaoCalculo.ValorTotalDisponibilizado,
             SalarioMinimo = configuracaoCalculo.SalarioMinimo,
-            Funcionarios = new List<RelatorioDistribuicaoFuncionario>()
+            RelatorioDistribuicaoFuncionario = new List<RelatorioDistribuicaoFuncionario>()
         };
 
-        var relatorioFuncionarios = await ProcessarFuncionarios(entity.Pesos, entity.SalarioMinimo);
-        entity.Funcionarios = relatorioFuncionarios;
+        var relatorioFuncionarios = await ProcessarFuncionarios(pesos, entity.SalarioMinimo);
+
+        entity.RelatorioDistribuicaoFuncionario = relatorioFuncionarios;
         entity.TotalDistribuido = relatorioFuncionarios.Sum(f => f.ValorTotal);
         entity.SaldoDisponibilizadoDistribuido = entity.TotalDisponibilizado - entity.TotalDistribuido;
 
@@ -77,7 +84,7 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
         return entity;
     }
 
-    private async Task<IEnumerable<RelatorioDistribuicaoFuncionario>> ProcessarFuncionarios(IEnumerable<Peso> pesos, double salarioMinimo)
+    private async Task<ICollection<RelatorioDistribuicaoFuncionario>> ProcessarFuncionarios(IEnumerable<Peso> pesos, double salarioMinimo)
     {
         List<Funcionario> funcionarios = (await _funcionario.GetAll()).ToList();
         var relatorioFuncionarios = new List<RelatorioDistribuicaoFuncionario>();

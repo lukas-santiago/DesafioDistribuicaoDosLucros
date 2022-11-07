@@ -12,4 +12,31 @@ public class RelatorioDistribuicaoFuncionario : BaseModel
     public double SalarioBruto { get; set; }
     public double ValorDisponibilizado { get; set; }
     public double ValorTotal { get; set; }
+    public long RelatorioDistribuicaoId { get; set; }
+    public RelatorioDistribuicao RelatorioDistribuicao { get; set; }
+
+}
+
+public class RelatorioDistribuicaoPeso : Peso
+{
+    public RelatorioDistribuicaoPeso()
+    {
+    }
+    public RelatorioDistribuicaoPeso(Peso peso)
+    {
+        TipoPeso = peso.TipoPeso;
+        Valor = peso.Valor;
+        Nome = peso.Nome;
+        ValorMaximo = peso.ValorMaximo;
+        ValorMinimo = peso.ValorMinimo;
+        Funcionarios = peso.Funcionarios;
+
+        CreationDate = peso.CreationDate;
+        UpdatedDate = peso.UpdatedDate;
+        Ativo = peso.Ativo;
+    }
+
+    public long RelatorioDistribuicaoId { get; set; }
+    public RelatorioDistribuicao? RelatorioDistribuicao { get; set; }
+
 }
