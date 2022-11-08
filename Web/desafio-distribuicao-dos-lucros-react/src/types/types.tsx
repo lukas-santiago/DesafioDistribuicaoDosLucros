@@ -15,7 +15,7 @@ export type Funcionario = {
   matricula: string
   nome: string
   areaAtuacao: number
-  cargo: 0 | 1
+  cargo: number
   salarioBruto: number
   dataAdmissao: Date
 }

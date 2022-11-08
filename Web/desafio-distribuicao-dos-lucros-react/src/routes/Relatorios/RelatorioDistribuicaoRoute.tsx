@@ -1,1 +1,3 @@
-export function RelatorioDistribuicaoRoute(): any { return <div>oba</div>; }
+import { Container } from "react-bootstrap";
+
+export function RelatorioDistribuicaoRoute(): any { return <Container>oba</Container>; }

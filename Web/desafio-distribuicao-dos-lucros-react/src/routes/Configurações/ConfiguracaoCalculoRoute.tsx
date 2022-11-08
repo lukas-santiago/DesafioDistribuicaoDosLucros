@@ -1,33 +1,54 @@
-import { Formik } from 'formik'
+import { Formik, FormikHelpers } from 'formik'
 import * as yup from 'yup'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import axios from 'axios'
 
 const initialValues = {
-  ValorTotalDisponibilizado: 0,
-  SalarioMinimo: 1000,
+  valorTotalDisponibilizado: 0,
+  salarioMinimo: 1000,
 }
 
 const validationSchema = yup.object().shape({
-  ValorTotalDisponibilizado: yup.number().moreThan(0, 'Deve ser maior que 0').required('Este é um campo necessário'),
-  SalarioMinimo: yup.number().moreThan(0, 'Deve ser maior que 0').required('Este é um campo necessário'),
+  valorTotalDisponibilizado: yup.number().moreThan(0, 'Deve ser maior que 0').required('Campo inválido'),
+  salarioMinimo: yup.number().moreThan(0, 'Deve ser maior que 0').required('Campo inválido'),
 })
 
 export function ConfiguracaoCalculoRoute(): any {
   const [formData, setFormData] = useState<any>(null)
 
-  const handleFormSubmit = (values: any) => {
-    console.log(values)
+  const handleFormSubmit = async (values: any, formikHelpers: FormikHelpers<any>) => {
+    await saveData(values)
+    formikHelpers.setSubmitting(false)
+  }
+
+  async function fetchData() {
+    try {
+      const response = await axios.get('http://localhost:5216/api/v1/ConfiguracaoCalculo')
+      setFormData(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function saveData(values: any) {
+    try {
+      console.log(values)
+      await axios.put('http://localhost:5216/api/v1/ConfiguracaoCalculo', {
+        ...values,
+        id: 0,
+      })
+      fetchData()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
-    setFormData({
-      ...initialValues,
-      ValorTotalDisponibilizado: 100000,
-    })
+    fetchData()
   }, [])
   return (
     <>
@@ -41,51 +62,63 @@ export function ConfiguracaoCalculoRoute(): any {
           initialValues={formData || initialValues}
           validationSchema={validationSchema}
         >
-          {({ values, errors, touched, handleBlur, handleChange, handleSubmit, isSubmitting }) => (
+          {({ values, errors, touched, handleBlur, handleChange, handleSubmit, isSubmitting, resetForm }) => (
             <Form onSubmit={handleSubmit}>
-              <Form.Group className='mb-3' controlId='ValorTotalDisponibilizado'>
+              <Form.Group className='mb-3' controlId='valorTotalDisponibilizado'>
                 <Form.Label>Valor Total Disponibilizado</Form.Label>
                 <InputGroup className='mb-3'>
                   <InputGroup.Text>R$</InputGroup.Text>
                   <Form.Control
                     type='number'
-                    name='ValorTotalDisponibilizado'
+                    name='valorTotalDisponibilizado'
                     aria-label='Quantidade (em reais)'
-                    value={values.ValorTotalDisponibilizado}
-                    onChange={handleChange}
+                    value={values.valorTotalDisponibilizado}
+                    onChange={handleChange('valorTotalDisponibilizado')}
                     onBlur={handleBlur}
-                    isValid={touched.ValorTotalDisponibilizado && !errors.ValorTotalDisponibilizado}
-                    isInvalid={!!errors.ValorTotalDisponibilizado}
+                    isValid={touched.valorTotalDisponibilizado && !errors.valorTotalDisponibilizado}
+                    isInvalid={!!errors.valorTotalDisponibilizado}
                   />
                   <InputGroup.Text>.00</InputGroup.Text>
                 </InputGroup>
                 <Form.Control.Feedback className='d-block' type='invalid'>
-                  {errors.ValorTotalDisponibilizado}
+                  {errors.valorTotalDisponibilizado}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className='mb-3' controlId='SalarioMinimo'>
+
+              <Form.Group className='mb-3' controlId='salarioMinimo'>
                 <Form.Label>Salario Mínimo</Form.Label>
                 <InputGroup className='mb-3'>
                   <InputGroup.Text>R$</InputGroup.Text>
                   <Form.Control
                     type='number'
-                    name='SalarioMinimo'
+                    name='salarioMinimo'
                     aria-label='Quantidade (em reais)'
-                    value={values.SalarioMinimo}
-                    onChange={handleChange}
+                    value={values.salarioMinimo}
+                    onChange={handleChange('salarioMinimo')}
                     onBlur={handleBlur}
-                    isValid={touched.SalarioMinimo && !errors.SalarioMinimo}
-                    isInvalid={!!errors.SalarioMinimo}
+                    isValid={touched.salarioMinimo && !errors.salarioMinimo}
+                    isInvalid={!!errors.salarioMinimo}
                   />
                   <InputGroup.Text>.00</InputGroup.Text>
                 </InputGroup>
                 <Form.Control.Feedback className='d-block' type='invalid'>
-                  {errors.SalarioMinimo}
+                  {errors.salarioMinimo}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Button type='submit' disabled={isSubmitting}>
-                Salvar
-              </Button>
+
+              <div className='d-flex gap-2 justify-content-center '>
+                <Button
+                  onClick={() => resetForm()}
+                  disabled={isSubmitting}
+                  className='btn-secondary'
+                  style={{ width: 100 }}
+                >
+                  Cancelar
+                </Button>
+                <Button type='submit' disabled={isSubmitting} className='btn-primary' style={{ width: 100 }}>
+                  Salvar
+                </Button>
+              </div>
             </Form>
           )}
         </Formik>

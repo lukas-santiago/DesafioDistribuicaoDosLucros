@@ -2,6 +2,7 @@ import './App.css'
 import { Menu, MenuItem, ProSidebarProvider, Sidebar, SubMenu } from 'react-pro-sidebar'
 import { Link, Routes, Route } from 'react-router-dom'
 import { CadastroDeFuncionariosRoute } from './routes/Configurações/CadastroDeFuncionariosRoute'
+import { FormularioFuncionarioRoute } from './routes/Configurações/FormularioFuncionarioRoute'
 import { ConfiguracaoCalculoRoute } from './routes/Configurações/ConfiguracaoCalculoRoute'
 import { InicioRoute } from './routes/Inicio/InicioRoute'
 import { RelatorioDistribuicaoRoute } from './routes/Relatorios/RelatorioDistribuicaoRoute'
@@ -32,6 +33,7 @@ function App() {
             <Route path='/relatorio/distribuicao' element={<RelatorioDistribuicaoRoute />} />
             <Route path='/configuracao/calculo' element={<ConfiguracaoCalculoRoute />} />
             <Route path='/configuracao/cadastro-de-funcionarios' element={<CadastroDeFuncionariosRoute />} />
+            <Route path='/configuracao/cadastro-de-funcionarios/:id' element={<FormularioFuncionarioRoute />} />
             <Route path='/sobre' element={<SobreRoute />} />
           </Routes>
         </div>
