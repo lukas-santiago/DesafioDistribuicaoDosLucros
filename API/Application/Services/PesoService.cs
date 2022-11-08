@@ -55,7 +55,7 @@ public class PesoService : IPesoService
                 return peso.Valor;
         }
 
-        throw new NotFoundException();
+        throw new NotFoundException("Peso não encontrado");
     }
     public int GetPesoPorTempoDeAdmissao(DateTime dataAdmissao)
     {
@@ -78,7 +78,7 @@ public class PesoService : IPesoService
                 return peso.Valor;
         }
 
-        throw new NotFoundException();
+        throw new NotFoundException("Peso não encontrado");
     }
     private int CalculateYearsOfDiferenceFromNow(DateTime date)
     {

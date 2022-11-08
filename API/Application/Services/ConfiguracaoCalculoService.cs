@@ -32,13 +32,13 @@ public class ConfiguracaoCalculoService : IConfiguracaoCalculoService
         var oldEntity = _connection.ConfiguracaoCalculo.FirstOrDefault(e => e.Ativo == true);
 
         if (oldEntity == null)
-            throw new NotFoundException();
+            throw new NotFoundException("Configuração não encontrada");
 
-        if (oldEntity.ValorTotalDisponibilizado == value.ValorTotalDisponibilizado)
-            throw new EqualException();
-        
-        if (value.ValorTotalDisponibilizado == 0)
-            throw new CannotBeZeroException();
+        if (oldEntity.ValorTotalDisponibilizado == value.ValorTotalDisponibilizado && oldEntity.SalarioMinimo == value.SalarioMinimo)
+            throw new EqualException("Objeto retornou igual ao armazenado");
+
+        if (value.ValorTotalDisponibilizado == 0 && value.SalarioMinimo == 0)
+            throw new CannotBeZeroException("Não pode haver propriedades com valor zero");
 
         oldEntity.Ativo = false;
         _connection.ConfiguracaoCalculo.Update(oldEntity);

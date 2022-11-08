@@ -24,7 +24,7 @@ public class FuncionarioService : IFuncionarioService
         var entity = await _connection.Funcionario.FindAsync(id);
 
         if (entity == null)
-            throw new NotFoundException();
+            throw new NotFoundException("Funcionario não encontrado");
 
         return entity;
     }
@@ -32,7 +32,7 @@ public class FuncionarioService : IFuncionarioService
     public async Task<Funcionario> Add(Funcionario value)
     {
         if (value.Id != 0)
-            throw new AlreadyExistsException();
+            throw new AlreadyExistsException("Funcionario já existente");
 
         await _connection.Funcionario.AddAsync(value);
         await _connection.SaveChangesAsync();
@@ -44,7 +44,7 @@ public class FuncionarioService : IFuncionarioService
         var entity = await _connection.Funcionario.FindAsync(value.Id);
 
         if (entity == null)
-            throw new NotFoundException();
+            throw new NotFoundException("Funcionario não encontrado");
 
         entity.Matricula = value.Matricula;
         entity.Nome = value.Nome;
@@ -66,7 +66,8 @@ public class FuncionarioService : IFuncionarioService
         var entity = await _connection.Funcionario.FindAsync(id);
 
         if (entity == null)
-            throw new NotFoundException();
+            throw new NotFoundException("Funcionario não encontrado");
+
 
         _connection.Funcionario.Remove(entity);
         await _connection.SaveChangesAsync();

@@ -28,7 +28,7 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
         var result = _connection.RelatorioDistribuicao.OrderByDescending(e => e.CreationDate).FirstOrDefault();
 
         if (result == null)
-            throw new NotFoundException();
+            throw new NotFoundException("RelatorioDistribuicao não encontrado");
 
         result.RelatorioDistribuicaoFuncionario = _connection.RelatorioDistribuicaoFuncionario
             .Where(e => e.RelatorioDistribuicaoId == result.Id).ToList();
@@ -51,7 +51,7 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
         var result = _connection.RelatorioDistribuicao.Where(e => e.Id == id).FirstOrDefault();
 
         if (result == null)
-            throw new NotFoundException();
+            throw new NotFoundException("RelatorioDistribuicao não encontrado");
 
         return await Task.FromResult<RelatorioDistribuicao>(result);
     }
