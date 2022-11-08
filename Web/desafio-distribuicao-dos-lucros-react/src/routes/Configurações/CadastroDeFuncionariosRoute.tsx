@@ -4,13 +4,25 @@ import { useMemo, useEffect, useState } from 'react'
 import BTable from 'react-bootstrap/Table'
 import { Hooks, useTable } from 'react-table'
 import axios from 'axios'
-import { Button, Container } from 'react-bootstrap'
+import { Button, Container, Modal } from 'react-bootstrap'
 import { Funcionario } from '../../types/types'
 import { useNavigate } from 'react-router-dom'
 
 export function CadastroDeFuncionariosRoute(): any {
   const [rowData, setRowData] = useState<any>()
+  const [idFuncionario, setIdFuncionario] = useState<number>()
+  const [showModalDeleteFuncionario, setShowModalDeleteFuncionario] = useState<boolean>(false)
   const navigate = useNavigate()
+
+  const deleteFuncionario = async () => {
+    try {
+      const response = await axios.delete('http://localhost:5216/api/v1/Funcionario/' + idFuncionario)
+      await fetchData()
+      setShowModalDeleteFuncionario(false)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const columns: ColumnDef<Funcionario>[] = useMemo(
     () => [
@@ -77,10 +89,13 @@ export function CadastroDeFuncionariosRoute(): any {
             >
               Editar
             </Button>
-            <Button size='sm' className='btn-danger'>
+            <Button size='sm' className='btn-danger' onClick={() => {
+              setIdFuncionario(row.values.id)
+              setShowModalDeleteFuncionario(true)
+            }}>
               Deletar
             </Button>
-          </div>
+          </div >
         ),
       },
     ])
@@ -123,7 +138,7 @@ export function CadastroDeFuncionariosRoute(): any {
       <hr />
       <section>
         <div className='d-flex justify-content-end'>
-          <Button size='sm' className='btn-success'>
+          <Button size='sm' className='btn-success' onClick={() => navigate('/configuracao/cadastro-de-funcionarios/0')}>
             Adicionar
           </Button>
         </div>
@@ -151,6 +166,24 @@ export function CadastroDeFuncionariosRoute(): any {
           </tbody>
         </BTable>
       </section>
-    </Container>
+      <Modal show={showModalDeleteFuncionario}>
+        <Modal.Header>Deletar funcionário?</Modal.Header>
+        <Modal.Body>Realmente deseja deletar esse funcionário?</Modal.Body>
+        <Modal.Footer>
+          <div className='d-flex gap-2 justify-content-center '>
+            <Button
+              className='btn-secondary'
+              style={{ width: 100 }}
+              onClick={() => setShowModalDeleteFuncionario(false)}
+            >
+              Cancelar
+            </Button>
+            <Button type='submit' className='btn-primary' style={{ width: 100 }} onClick={deleteFuncionario}>
+              Salvar
+            </Button>
+          </div>
+        </Modal.Footer>
+      </Modal>
+    </Container >
   )
 }

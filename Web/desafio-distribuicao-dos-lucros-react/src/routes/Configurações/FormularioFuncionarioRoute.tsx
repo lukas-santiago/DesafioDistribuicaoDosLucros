@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Funcionario } from '../../types/types'
 import axios from 'axios'
@@ -36,6 +36,7 @@ const validationSchema: SchemaOf<Funcionario> = yup.object({
 
 export function FormularioFuncionarioRoute() {
   let { id } = useParams()
+  const navigate = useNavigate()
 
   const [funcionario, setFuncionario] = useState<Funcionario>()
 
@@ -45,8 +46,9 @@ export function FormularioFuncionarioRoute() {
 
   const handleFormSubmit = async (values: any, formikHelpers: FormikHelpers<any>) => {
     console.log(values)
-
+    await saveData(values)
     formikHelpers.setSubmitting(false)
+    navigate(-1)
   }
 
   async function fetchData() {
@@ -64,7 +66,11 @@ export function FormularioFuncionarioRoute() {
       if (Number(id) == 0) {
         await axios.post('http://localhost:5216/api/v1/Funcionario', {
           ...values,
+          dataAdmissao: new Date(values.dataAdmissao).toISOString(),
           id: 0,
+          areaAtuacao: Number(values.areaAtuacao),
+          cargo: Number(values.cargo),
+          salarioBruto: Number(values.salarioBruto),
         })
       } else {
         await axios.put('http://localhost:5216/api/v1/Funcionario', values)
@@ -76,16 +82,16 @@ export function FormularioFuncionarioRoute() {
   }
 
   const OptionsAreaAtuacao = [
-    { value: 'Diretoria', text: 'Diretoria' },
-    { value: 'Relacionamento com o Cliente', text: 'Relacionamento com o Cliente' },
-    { value: 'Serviços Gerais', text: 'Serviços Gerais' },
-    { value: 'Contabilidade', text: 'Contabilidade' },
-    { value: 'Financeiro', text: 'Financeiro' },
-    { value: 'Tecnologia', text: 'Tecnologia' },
+    { value: 0, text: 'Diretoria' },
+    { value: 1, text: 'Relacionamento com o Cliente' },
+    { value: 2, text: 'Serviços Gerais' },
+    { value: 3, text: 'Contabilidade' },
+    { value: 3, text: 'Financeiro' },
+    { value: 3, text: 'Tecnologia' },
   ]
   const OptionsCargo = [
-    { value: 'Funcionário', text: 'Funcionário' },
-    { value: 'Estagiário', text: 'Estagiário' },
+    { value: 0, text: 'Funcionário' },
+    { value: 1, text: 'Estagiário' },
   ]
 
   return (
@@ -117,7 +123,7 @@ export function FormularioFuncionarioRoute() {
           return (
             <Form onSubmit={handleSubmit}>
               <Row>
-                <Col md={{ span: '3' }}>
+                <Col lg={{ span: '3' }} md={{ span: '6' }}>
                   <Form.Group className='mb-3'>
                     <Form.Label>Matrícula</Form.Label>
                     <Form.Control type='text' value={values.matricula} {...getProps('matricula')} />
@@ -126,7 +132,7 @@ export function FormularioFuncionarioRoute() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col md={{ span: '3' }}>
+                <Col lg={{ span: '3' }} md={{ span: '6' }}>
                   <Form.Group className='mb-3'>
                     <Form.Label>Nome</Form.Label>
                     <Form.Control type='text' value={values.nome} {...getProps('nome')} />
@@ -135,7 +141,7 @@ export function FormularioFuncionarioRoute() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col md={{ span: '3' }}>
+                <Col lg={{ span: '3' }} md={{ span: '6' }}>
                   <Form.Group className='mb-3'>
                     <Form.Label>Área de Atuação</Form.Label>
                     <Form.Select value={values.areaAtuacao} {...getProps('areaAtuacao')}>
@@ -150,7 +156,7 @@ export function FormularioFuncionarioRoute() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col md={{ span: '3' }}>
+                <Col lg={{ span: '3' }} md={{ span: '6' }}>
                   <Form.Group className='mb-3'>
                     <Form.Label>Cargo</Form.Label>
                     <Form.Select value={values.cargo} {...getProps('cargo')}>
@@ -165,7 +171,7 @@ export function FormularioFuncionarioRoute() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col md={{ span: '3' }}>
+                <Col lg={{ span: '3' }} md={{ span: '6' }}>
                   <Form.Group className='mb-3'>
                     <Form.Label>Salário Bruto</Form.Label>
                     <InputGroup className='mb-3'>
@@ -178,7 +184,7 @@ export function FormularioFuncionarioRoute() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-                <Col md={{ span: '3' }}>
+                <Col lg={{ span: '3' }} md={{ span: '6' }}>
                   <Form.Group className='mb-3'>
                     <Form.Label>Data de Admissão</Form.Label>
                     <Form.Control type='datetime-local' value={dataformat} {...getProps('dataAdmissao')} />
@@ -190,7 +196,7 @@ export function FormularioFuncionarioRoute() {
               </Row>
               <div className='d-flex gap-2 justify-content-center '>
                 <Button
-                  onClick={() => resetForm()}
+                  onClick={() => navigate(-1)}
                   disabled={isSubmitting}
                   className='btn-secondary'
                   style={{ width: 100 }}

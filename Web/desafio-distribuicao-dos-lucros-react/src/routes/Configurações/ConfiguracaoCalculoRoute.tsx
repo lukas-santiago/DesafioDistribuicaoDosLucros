@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import { Container } from 'react-bootstrap'
 
 const initialValues = {
   valorTotalDisponibilizado: 0,
@@ -51,7 +52,7 @@ export function ConfiguracaoCalculoRoute(): any {
     fetchData()
   }, [])
   return (
-    <>
+    <Container>
       <h1>Configurações do Cálculo</h1>
       <hr />
       <section>
@@ -123,6 +124,6 @@ export function ConfiguracaoCalculoRoute(): any {
           )}
         </Formik>
       </section>
-    </>
+    </Container>
   )
 }
