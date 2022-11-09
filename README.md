@@ -6,7 +6,7 @@ Uma empresa fechou o ano de operação com lucro e deseja reparti-lo entre seus 
 
 Desevolvido por Lukas Araujo Santiago
 - [Link para o meu GitHub](https://github.com/lukas-santiago)
-- [Link para o meu Linkdin](https://www.linkedin.com/in/lukas-santiago/)
+- [Link para o meu Linkedin](https://www.linkedin.com/in/lukas-santiago/)
 
 ## Instalação
 Para iniciar a API
