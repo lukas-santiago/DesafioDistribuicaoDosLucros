@@ -16,7 +16,7 @@ public class FuncionarioService : IFuncionarioService
 
     public async Task<IEnumerable<Funcionario>> GetAll()
     {
-        List<Funcionario> result = _connection.Funcionario.Where(f => f.Ativo == true).ToList();
+        List<Funcionario> result = _connection.Funcionario.Where(f => f.Ativo == true).OrderBy(f => f.Id).ToList();
         return await Task.FromResult(result);
     }
     public async Task<Funcionario> Get(long id)

@@ -2,6 +2,7 @@ using Application.Configuration;
 using Application.Errors;
 using Application.Models;
 using Application.Models.Enum;
+using Application.Models.Response;
 using Application.Services.Interfaces;
 
 namespace Application.Services;
@@ -37,13 +38,35 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
 
         return await Task.FromResult<RelatorioDistribuicao>(result);
     }
-    public async Task<IEnumerable<RelatorioDistribuicao>> GetAll()
+    public async Task<IEnumerable<RelatorioDistribuicaoSimplified>> GetAll()
     {
-        var result = _connection.RelatorioDistribuicao
-            .OrderByDescending(e => e.CreationDate)
+        var entities = _connection.RelatorioDistribuicao
+            .OrderByDescending(e => e.Id)
             .ToList();
 
-        return await Task.FromResult(result == null ? new List<RelatorioDistribuicao>() : result);
+        List<RelatorioDistribuicaoSimplified> result = new List<RelatorioDistribuicaoSimplified>();
+
+        foreach (var entity in entities)
+        {
+            entity.RelatorioDistribuicaoFuncionario = _connection.RelatorioDistribuicaoFuncionario
+                .Where(e => e.RelatorioDistribuicaoId == entity.Id).ToList();
+            entity.RelatorioDistribuicaoPeso = _connection.RelatorioDistribuicaoPeso
+                .Where(e => e.RelatorioDistribuicaoId == entity.Id).ToList();
+
+            result.Add(new RelatorioDistribuicaoSimplified()
+            {
+                TotalDisponibilizado = entity.TotalDisponibilizado,
+                TotalDistribuido = entity.TotalDistribuido,
+                SalarioMinimo = entity.SalarioMinimo,
+                SaldoDisponibilizadoDistribuido = entity.SaldoDisponibilizadoDistribuido,
+                TotalFuncionarios = entity.TotalFuncionarios,
+                Id = entity.Id,
+                CreationDate = entity.CreationDate,
+                UpdatedDate = entity.UpdatedDate,
+            });
+        }
+
+        return await Task.FromResult(result == null ? new List<RelatorioDistribuicaoSimplified>() : result);
     }
 
     public async Task<RelatorioDistribuicao> GetById(int id)
@@ -52,6 +75,11 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
 
         if (result == null)
             throw new NotFoundException("RelatorioDistribuicao não encontrado");
+
+        result.RelatorioDistribuicaoFuncionario = _connection.RelatorioDistribuicaoFuncionario
+            .Where(e => e.RelatorioDistribuicaoId == result.Id).ToList();
+        result.RelatorioDistribuicaoPeso = _connection.RelatorioDistribuicaoPeso
+            .Where(e => e.RelatorioDistribuicaoId == result.Id).ToList();
 
         return await Task.FromResult<RelatorioDistribuicao>(result);
     }
@@ -98,6 +126,8 @@ public class RelatorioDistribuicaoService : IRelatorioDistribuicaoService
                 AreaAtuacao = funcionario.AreaAtuacao,
                 Cargo = funcionario.Cargo,
                 SalarioBruto = funcionario.SalarioBruto,
+                DataAdmissao = funcionario.DataAdmissao,
+
                 CreationDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
                 Ativo = true
