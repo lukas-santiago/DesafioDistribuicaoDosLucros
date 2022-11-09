@@ -1,22 +1,27 @@
-import { CellContext, ColumnDef, CoreCell } from '@tanstack/react-table'
+import { ColumnDef } from '@tanstack/react-table'
 import { useMemo, useEffect, useState } from 'react'
 
-import BTable from 'react-bootstrap/Table'
-import { Hooks, useTable } from 'react-table'
+import { Column } from 'react-table'
 import axios from 'axios'
 import { Button, Container, Modal } from 'react-bootstrap'
 import { Funcionario } from '../../types/types'
 import { useNavigate } from 'react-router-dom'
+import { GenericTable } from '../../components/GenericTable'
 
 export function CadastroDeFuncionariosRoute(): any {
+  const navigate = useNavigate()
+
   const [rowData, setRowData] = useState<any>()
   const [idFuncionario, setIdFuncionario] = useState<number>()
-  const [showModalDeleteFuncionario, setShowModalDeleteFuncionario] = useState<boolean>(false)
-  const navigate = useNavigate()
+  const [showModalDeleteFuncionario, setShowModalDeleteFuncionario] = useState(
+    false,
+  )
 
   const deleteFuncionario = async () => {
     try {
-      const response = await axios.delete('http://localhost:5216/api/v1/Funcionario/' + idFuncionario)
+      const response = await axios.delete(
+        'http://localhost:5216/api/v1/Funcionario/' + idFuncionario,
+      )
       await fetchData()
       setShowModalDeleteFuncionario(false)
     } catch (error) {
@@ -24,7 +29,7 @@ export function CadastroDeFuncionariosRoute(): any {
     }
   }
 
-  const columns: ColumnDef<Funcionario>[] = useMemo(
+  const columns: Column<Funcionario>[] = useMemo(
     () => [
       {
         header: '#',
@@ -39,7 +44,7 @@ export function CadastroDeFuncionariosRoute(): any {
         accessor: 'nome',
       },
       {
-        header: 'Area de Atuação',
+        header: 'Área de Atuação',
         accessor: 'areaAtuacao',
       },
       {
@@ -66,39 +71,46 @@ export function CadastroDeFuncionariosRoute(): any {
         Cell: parseToDateTimeCell(),
       },
     ],
-    []
+    [],
   )
-
   const data = useMemo(() => rowData || [], [rowData])
 
-  const tableHooks = (hooks: any): Hooks =>
-    hooks.visibleColumns.push((columns: ColumnDef<Funcionario>[]) => [
-      ...columns,
+  const tableHooks: ColumnDef<Funcionario>[] = useMemo(
+    () => [
       {
         header: 'Ação',
         id: 'actions',
-        Cell: ({ row, getValue }) => (
-          <div className='d-flex gap-2'>
+        Cell: ({ row, getValue }: any) => (
+          <div className="d-flex gap-2">
             <Button
-              size='sm'
-              className='btn-warning'
+              size="sm"
+              className="btn-warning"
               onClick={() => {
-                console.log(row.values.id);
-                navigate('/configuracao/cadastro-de-funcionarios/' + Number(row.values.id))
+                console.log(row.values.id)
+                navigate(
+                  '/configuracao/cadastro-de-funcionarios/' +
+                    Number(row.values.id),
+                )
               }}
             >
               Editar
             </Button>
-            <Button size='sm' className='btn-danger' onClick={() => {
-              setIdFuncionario(row.values.id)
-              setShowModalDeleteFuncionario(true)
-            }}>
+            <Button
+              size="sm"
+              className="btn-danger"
+              onClick={() => {
+                setIdFuncionario(row.values.id)
+                setShowModalDeleteFuncionario(true)
+              }}
+            >
               Deletar
             </Button>
-          </div >
+          </div>
         ),
       },
-    ])
+    ],
+    [],
+  )
 
   function parseToDateTimeCell(): (({ cell }: any) => JSX.Element) | undefined {
     return ({ cell }: any) => (
@@ -113,7 +125,9 @@ export function CadastroDeFuncionariosRoute(): any {
 
   async function fetchData() {
     try {
-      const response = await axios.get('http://localhost:5216/api/v1/Funcionario')
+      const response = await axios.get(
+        'http://localhost:5216/api/v1/Funcionario',
+      )
       setRowData(response.data)
     } catch (error) {
       console.error(error)
@@ -124,66 +138,51 @@ export function CadastroDeFuncionariosRoute(): any {
     fetchData()
   }, [])
 
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable(
-    {
-      columns: columns,
-      data: data,
-    },
-    tableHooks
-  )
-
   return (
     <Container>
       <h1>Cadastro de Funcionários</h1>
       <hr />
       <section>
-        <div className='d-flex justify-content-end'>
-          <Button size='sm' className='btn-success' onClick={() => navigate('/configuracao/cadastro-de-funcionarios/0')}>
+        <div className="d-flex justify-content-end">
+          <Button
+            size="sm"
+            className="btn-success"
+            onClick={() => navigate('/configuracao/cadastro-de-funcionarios/0')}
+          >
             Adicionar
           </Button>
         </div>
-        <BTable className='rounded-5' striped hover {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>{column.render('header')}</th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {rows.map((row, i) => {
-              prepareRow(row)
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  })}
-                </tr>
-              )
-            })}
-          </tbody>
-        </BTable>
+        <GenericTable
+          options={{
+            columns: columns,
+            data: data,
+          }}
+          plugins={tableHooks}
+        />
       </section>
       <Modal show={showModalDeleteFuncionario}>
         <Modal.Header>Deletar funcionário?</Modal.Header>
         <Modal.Body>Realmente deseja deletar esse funcionário?</Modal.Body>
         <Modal.Footer>
-          <div className='d-flex gap-2 justify-content-center '>
+          <div className="d-flex gap-2 justify-content-center ">
             <Button
-              className='btn-secondary'
+              className="btn-secondary"
               style={{ width: 100 }}
               onClick={() => setShowModalDeleteFuncionario(false)}
             >
               Cancelar
             </Button>
-            <Button type='submit' className='btn-primary' style={{ width: 100 }} onClick={deleteFuncionario}>
+            <Button
+              type="submit"
+              className="btn-primary"
+              style={{ width: 100 }}
+              onClick={deleteFuncionario}
+            >
               Salvar
             </Button>
           </div>
         </Modal.Footer>
       </Modal>
-    </Container >
+    </Container>
   )
 }
