@@ -7,6 +7,7 @@ import { ConfiguracaoCalculoRoute } from './routes/Configurações/ConfiguracaoC
 import { InicioRoute } from './routes/Inicio/InicioRoute'
 import { RelatorioDistribuicaoRoute } from './routes/Relatorios/RelatorioDistribuicaoRoute'
 import { SobreRoute } from './routes/Sobre/SobreRoute'
+import { RelatorioDistribuicaoDetailsRoute } from './routes/Relatorios/RelatorioDistribuicaoDetailsRoute';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Routes>
             <Route path='/' element={<InicioRoute />} />
             <Route path='/relatorio/distribuicao' element={<RelatorioDistribuicaoRoute />} />
+            <Route path='/relatorio/distribuicao/:id' element={<RelatorioDistribuicaoDetailsRoute />} />
             <Route path='/configuracao/calculo' element={<ConfiguracaoCalculoRoute />} />
             <Route path='/configuracao/cadastro-de-funcionarios' element={<CadastroDeFuncionariosRoute />} />
             <Route path='/configuracao/cadastro-de-funcionarios/:id' element={<FormularioFuncionarioRoute />} />
