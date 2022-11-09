@@ -20,7 +20,7 @@ public class ConfiguracaoCalculoService : IConfiguracaoCalculoService
     }
     public async Task<ConfiguracaoCalculo> Get()
     {
-        var entity = _connection.ConfiguracaoCalculo.OrderByDescending(f => f.CreationDate).First();
+        var entity = _connection.ConfiguracaoCalculo.OrderByDescending(f => f.Id).First();
 
         if (entity == null)
             throw new NotFoundException();
@@ -45,6 +45,7 @@ public class ConfiguracaoCalculoService : IConfiguracaoCalculoService
 
         value.CreationDate = DateTime.Now;
         value.UpdatedDate = DateTime.Now;
+        value.Ativo = true;
 
         _connection.ConfiguracaoCalculo.Add(value);
         await _connection.SaveChangesAsync();
